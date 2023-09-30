@@ -22,7 +22,7 @@ services:
 volumes:
   beets:
 
-# networks might not be needed??
+# FIXME: networks might not be needed??
 networks:
   bridge:
     external: true
