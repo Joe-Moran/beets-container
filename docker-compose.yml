@@ -5,16 +5,18 @@ services:
   beets-cron:
     environment:
       VOLUME_MAP_SOURCE: ${VOLUME_MAP_SOURCE}
+      BEETS_DIRECTORY: /${BEETS_DIRECTORY}
     
     # this is the image built by docker build command
     image: beets-cron
 
     # maps an accessible volume from host (my computer or the server root) to a new volume on container
     volumes:
-      - ${VOLUME_MAP_SOURCE}:/beets
+      - ${VOLUME_MAP_SOURCE}:/${BEETS_DIRECTORY}
 
-    # needs to call import here rather than dockerfile for some reason?
-    # command: "beet import /beets"
+    build:
+      args:
+        BEETS_DIRECTORY: ${BEETS_DIRECTORY}
 
 # still need to specify volumes again
 volumes:
@@ -25,4 +27,5 @@ networks:
   bridge:
     external: true
     name: bridge
+  
 
