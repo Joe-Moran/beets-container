@@ -2,6 +2,7 @@ FROM alpine:latest
 ARG BEETS_DIRECTORY
 # set beet-specific variable pointing to config directory. ENV is read as an environment variable to linux
 ENV BEETSDIR=${BEETS_DIRECTORY}
+ENV CRON_INTERVAL="0 0 * * */1"
 
 # install all the things
 RUN apk update
@@ -12,7 +13,7 @@ RUN pip3 install --no-cache --upgrade pip setuptools
 RUN pip3 install beets
 
 # Add the cron job
-RUN crontab -l | { cat; echo -e "*/10 * * * * beet import -q" ${BEETS_DIRECTORY}; } | crontab -
+RUN crontab -l | { cat; echo -e ${CRON_INTERVAL} "beet import -q" ${BEETS_DIRECTORY}; } | crontab -
 
 # Run the command on container startup
 CMD crond -l 2 -f
